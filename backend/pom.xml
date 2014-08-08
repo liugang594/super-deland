@@ -11,4 +11,21 @@
     <artifactId>super-deland-backend</artifactId>
     <packaging>jar</packaging>
 
+	<properties>
+		<cxf-version>2.7.12</cxf-version>
+	</properties>
+
+    <dependencies>
+    	<dependency>
+    		<groupId>org.apache.cxf</groupId>
+    		<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+    		<version>${cxf-version}</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.apache.cxf</groupId>
+    		<artifactId>cxf-rt-transports-http-jetty</artifactId>
+    		<version>${cxf-version}</version>
+    		<scope>test</scope>
+    	</dependency>
+    </dependencies>
 </project>
