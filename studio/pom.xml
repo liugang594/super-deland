@@ -9,6 +9,11 @@
 	    <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>super-deland-studio</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
+	<modules>
+		<module>src/main/plugins/org.superdeland.studio.ui</module>
+		<module>src/main/plugins/org.superdeland.studio.core</module>
+	</modules>
+	
 </project>
