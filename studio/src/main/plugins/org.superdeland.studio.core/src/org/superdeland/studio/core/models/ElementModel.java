@@ -1,16 +1,17 @@
 package org.superdeland.studio.core.models;
 
-import java.awt.Dimension;
-import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 
-public class NodeModel extends AbstractModel {
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
+
+public class ElementModel extends AbstractModel {
 
 	private Point location = new Point(0, 0);
 
 	private Dimension size = new Dimension(100, 50);
 
-	private String name;
+	private String name = "<unnamed>";
 
 	public void setName(String name) {
 		this.name = name;
