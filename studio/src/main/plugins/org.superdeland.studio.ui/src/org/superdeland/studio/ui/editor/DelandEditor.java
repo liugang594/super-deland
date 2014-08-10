@@ -5,6 +5,8 @@ import java.util.EventObject;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.gef.KeyHandler;
+import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.ConnectionCreationToolEntry;
@@ -16,6 +18,8 @@ import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.tools.AbstractTool;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
+import org.eclipse.swt.SWT;
+import org.eclipse.ui.actions.ActionFactory;
 import org.superdeland.studio.core.models.DiagramModel;
 import org.superdeland.studio.core.models.ElementModel;
 import org.superdeland.studio.core.models.RelationModel;
@@ -71,6 +75,10 @@ public class DelandEditor extends GraphicalEditorWithFlyoutPalette {
 		getGraphicalViewer()
 				.setRootEditPart(new ScalableFreeformRootEditPart());
 		getGraphicalViewer().setEditPartFactory(new DelandEditPartFactory());
+		getGraphicalViewer().setKeyHandler(new KeyHandler());
+		getGraphicalViewer().getKeyHandler().put(KeyStroke.getPressed(SWT.DEL, (int)SWT.DEL, SWT.NONE), getActionRegistry().getAction(ActionFactory.DELETE.getId()));
+		getGraphicalViewer().getKeyHandler().put(KeyStroke.getPressed((char)('y'-'a'+1), (int)'y', SWT.CTRL), getActionRegistry().getAction(ActionFactory.REDO.getId()));
+		getGraphicalViewer().getKeyHandler().put(KeyStroke.getPressed((char)('z'-'a'+1), (int)'z', SWT.CTRL), getActionRegistry().getAction(ActionFactory.UNDO.getId()));
 	}
 
 	@Override

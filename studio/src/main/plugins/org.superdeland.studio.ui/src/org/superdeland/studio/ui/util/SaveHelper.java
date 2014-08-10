@@ -139,9 +139,11 @@ public class SaveHelper {
 			
 			for(ElementModel element:elements){
 				if(sourceId.equals(element.getId())){
-					relationModel.attachSource(element);
+					relationModel.setSource(element);
+					relationModel.attachSource();
 				}else if(targetId.equals(element.getId())){
-					relationModel.attachTarget(element);
+					relationModel.setTarget(element);
+					relationModel.attachTarget();
 				}
 			}
 		}

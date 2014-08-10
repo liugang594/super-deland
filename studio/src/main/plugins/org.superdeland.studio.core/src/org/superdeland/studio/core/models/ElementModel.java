@@ -19,6 +19,8 @@ public class ElementModel extends AbstractModel {
 
 	private String name = "<unnamed>";
 
+	private DiagramModel diagramModel;
+
 	public void setName(String name) {
 		this.name = name;
 		PropertyChangeEvent event = new PropertyChangeEvent(this, PROP_NAME,
@@ -80,5 +82,13 @@ public class ElementModel extends AbstractModel {
 	
 	public List<RelationModel> getTargets() {
 		return targets;
+	}
+
+	public void setParent(DiagramModel diagramModel) {
+		this.diagramModel = diagramModel;
+	}
+	
+	public DiagramModel getDiagramModel() {
+		return diagramModel;
 	}
 }

@@ -17,6 +17,7 @@ import org.superdeland.studio.core.models.AbstractModel;
 import org.superdeland.studio.core.models.ElementModel;
 import org.superdeland.studio.core.models.RelationModel;
 import org.superdeland.studio.ui.figures.ElementFigure;
+import org.superdeland.studio.ui.policies.ElementComponentEditPolicy;
 import org.superdeland.studio.ui.policies.ElementGraphicalNodeEditPolicy;
 
 public class ElementEditPart extends AbstractGraphicalEditPart implements NodeEditPart, PropertyChangeListener {
@@ -35,6 +36,7 @@ public class ElementEditPart extends AbstractGraphicalEditPart implements NodeEd
 	protected void createEditPolicies() {
 //		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ResizeElementEditPolicy());
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new ElementGraphicalNodeEditPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ElementComponentEditPolicy());
 	}
 
 	
@@ -66,6 +68,16 @@ public class ElementEditPart extends AbstractGraphicalEditPart implements NodeEd
 			refreshSourceConnections();
 		}else if(AbstractModel.PROP_TARGET.equals(propertyName)){
 			refreshTargetConnections();
+		}
+	}
+	
+	@Override
+	public void setSelected(int value) {
+		super.setSelected(value);
+		if(value == SELECTED || value == SELECTED_PRIMARY){
+			((ElementFigure)getFigure()).setSelected(true);
+		}else {
+			((ElementFigure)getFigure()).setSelected(false);
 		}
 	}
 

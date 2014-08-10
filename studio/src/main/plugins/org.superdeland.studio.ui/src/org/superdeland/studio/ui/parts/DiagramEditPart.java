@@ -40,7 +40,7 @@ public class DiagramEditPart extends AbstractGraphicalEditPart implements Proper
 	@Override
 	public void propertyChange(PropertyChangeEvent evn) {
 		String propertyName = evn.getPropertyName();
-		if(AbstractModel.PROP_ADD.equals(propertyName)){
+		if(AbstractModel.PROP_REMOVE.equals(propertyName) || AbstractModel.PROP_ADD.equals(propertyName)){
 			refreshChildren();
 		}
 	}

@@ -10,12 +10,14 @@ public class DiagramModel extends AbstractModel {
 
 	public void addNode(ElementModel node) {
 		children.add(node);
+		node.setParent(this);
 		PropertyChangeEvent event = new PropertyChangeEvent(this, PROP_ADD,
 				null, node);
 		firePropertyChangeEvent(event);
 	}
 
 	public void removeNode(ElementModel node) {
+		node.setParent(null);
 		children.remove(node);
 		PropertyChangeEvent event = new PropertyChangeEvent(this, PROP_REMOVE,
 				node, null);

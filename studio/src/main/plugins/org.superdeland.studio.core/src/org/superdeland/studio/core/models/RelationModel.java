@@ -6,14 +6,20 @@ public class RelationModel extends AbstractModel{
 	
 	private ElementModel target;
 	
-	public void attachSource(ElementModel source) {
-		this.source = source;
+	public void attachSource() {
 		source.addSource(this);
 	}
 	
-	public void attachTarget(ElementModel target) {
-		this.target = target;
+	public void attachTarget() {
 		target.addTarget(this);
+	}
+	
+	public void setSource(ElementModel source) {
+		this.source = source;
+	}
+	
+	public void setTarget(ElementModel target) {
+		this.target = target;
 	}
 	
 	public ElementModel getSource() {
@@ -24,14 +30,12 @@ public class RelationModel extends AbstractModel{
 		return target;
 	}
 
-	public void deattachSource(ElementModel source) {
+	public void deattachSource() {
 		source.removeSource(this);
-		this.source = null;
 	}
 	
-	public void deattachTarget(ElementModel target){
+	public void deattachTarget(){
 		target.removeTarget(this);
-		this.target = null;
 	}
 	
 }

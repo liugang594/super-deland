@@ -24,14 +24,16 @@ public class CreateConnectionCommand extends Command {
 	
 	@Override
 	public void execute() {
-		relation.attachSource(source);
-		relation.attachTarget(target);
+		relation.setSource(source);
+		relation.setTarget(target);
+		relation.attachSource();
+		relation.attachTarget();
 	}
 	
 	@Override
 	public void undo() {
-		relation.deattachSource(source);
-		relation.deattachTarget(target);
+		relation.deattachSource();
+		relation.deattachTarget();
 	}
 
 }
