@@ -11,6 +11,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
@@ -19,6 +20,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.superdeland.studio.core.models.AbstractModel;
 import org.superdeland.studio.core.models.ElementModel;
 import org.superdeland.studio.core.models.RelationModel;
+import org.superdeland.studio.ui.drag.DragElementEditPartTracker;
 import org.superdeland.studio.ui.edit.DelandDirectEditManager;
 import org.superdeland.studio.ui.figures.ElementFigure;
 import org.superdeland.studio.ui.policies.ElementComponentEditPolicy;
@@ -140,5 +142,10 @@ public class ElementEditPart extends AbstractGraphicalEditPart implements
 	@Override
 	protected List<RelationModel> getModelTargetConnections() {
 		return ((ElementModel) getModel()).getTargets();
+	}
+	
+	@Override
+	public DragTracker getDragTracker(Request request) {
+		return new DragElementEditPartTracker(this, request);
 	}
 }
