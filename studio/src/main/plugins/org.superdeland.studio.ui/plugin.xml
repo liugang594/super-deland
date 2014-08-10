@@ -8,7 +8,7 @@
             contributorClass="org.superdeland.studio.ui.editor.DelandEditorActionBarContributor"
             default="true"
             extensions="de"
-            icon="icons/codecount.gif"
+            icon="icons/element.gif"
             id="org.superdeland.studio.ui.editor"
             name="Deland Editor">
       </editor>

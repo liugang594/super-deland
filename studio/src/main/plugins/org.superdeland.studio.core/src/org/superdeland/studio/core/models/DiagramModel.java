@@ -26,8 +26,4 @@ public class DiagramModel extends AbstractModel {
 		return children;
 	}
 
-	public void doSave() {
-		
-	}
-
 }

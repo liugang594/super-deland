@@ -9,7 +9,8 @@ public class Activator extends AbstractUIPlugin {
 
 	private static BundleContext context;
 
-	public static final String IMG_NODE = "icons/codecount.gif";
+	public static final String IMG_NODE = "icons/element.gif";
+	public static final String IMG_CONN = "icons/connection.gif";
 
 	public static final String PLUGIN_ID = "org.superdeland.studio.ui";
 	
@@ -46,9 +47,10 @@ public class Activator extends AbstractUIPlugin {
 	@Override
 	protected void initializeImageRegistry(ImageRegistry reg) {
 		super.initializeImageRegistry(reg);
-		ImageDescriptor nodeImageDesc = imageDescriptorFromPlugin(PLUGIN_ID,
-				IMG_NODE);
-		reg.put(IMG_NODE, nodeImageDesc);
+		reg.put(IMG_NODE, imageDescriptorFromPlugin(PLUGIN_ID,
+				IMG_NODE));
+		reg.put(IMG_CONN, imageDescriptorFromPlugin(PLUGIN_ID,
+				IMG_CONN));
 	}
 	
 	public static ImageDescriptor getImageDescriptor(String ID){

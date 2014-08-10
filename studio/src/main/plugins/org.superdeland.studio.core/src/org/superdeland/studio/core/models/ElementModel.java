@@ -1,6 +1,8 @@
 package org.superdeland.studio.core.models;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
@@ -10,6 +12,10 @@ public class ElementModel extends AbstractModel {
 	private Point location = new Point(0, 0);
 
 	private Dimension size = new Dimension(100, 50);
+	
+	private List<RelationModel> sources = new ArrayList<>();
+	
+	private List<RelationModel> targets = new ArrayList<>();
 
 	private String name = "<unnamed>";
 
@@ -47,5 +53,32 @@ public class ElementModel extends AbstractModel {
 	public Dimension getSize() {
 		return size;
 	}
+	
+	public void addSource(RelationModel source){
+		sources.add(source);
+		firePropertyChangeEvent(new PropertyChangeEvent(this, PROP_SOURCE, null, source));
+	}
+	
+	public void addTarget(RelationModel target){
+		targets.add(target);
+		firePropertyChangeEvent(new PropertyChangeEvent(this, PROP_TARGET, null, target));
+	}
 
+	public void removeSource(RelationModel source){
+		sources.remove(source);
+		firePropertyChangeEvent(new PropertyChangeEvent(this, PROP_SOURCE, source, null));
+	}
+	
+	public void removeTarget(RelationModel target){
+		targets.remove(target);
+		firePropertyChangeEvent(new PropertyChangeEvent(this, PROP_TARGET, target, null));
+	}
+	
+	public List<RelationModel> getSources() {
+		return sources;
+	}
+	
+	public List<RelationModel> getTargets() {
+		return targets;
+	}
 }

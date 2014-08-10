@@ -9,7 +9,7 @@ public class DiagramFigure extends ScalableFreeformLayeredPane {
 	public DiagramFigure(){
 		setOpaque(true);
 		setLayoutManager(new FreeformLayout());
-		setBackgroundColor(ColorConstants.lightBlue);
+		setBackgroundColor(ColorConstants.lightGray);
 	}
 
 }

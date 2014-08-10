@@ -14,7 +14,17 @@ public class AbstractModel {
 	public static final String PROP_TARGET = "p_target";
 	public static final String PROP_ADD = "p_add";
 	public static final String PROP_REMOVE = "p_remove";
-
+	
+	private String id = null;
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
 	private List<PropertyChangeListener> listeners = new ArrayList<>();
 
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
