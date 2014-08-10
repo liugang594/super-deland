@@ -13,7 +13,6 @@ public class ResizeElementEditPolicy extends ResizableEditPolicy {
 		ResizeElementCommand command = new ResizeElementCommand();
 		command.setModel((ElementModel) getHost().getModel());
 		command.setSizeDelta(request.getSizeDelta());
-//		return command;
 		return super.getResizeCommand(request);
 	}
 	

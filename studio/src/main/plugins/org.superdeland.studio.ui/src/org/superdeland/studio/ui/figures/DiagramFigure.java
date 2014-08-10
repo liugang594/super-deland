@@ -6,7 +6,7 @@ import org.eclipse.swt.graphics.Color;
 
 public class DiagramFigure extends ScalableFreeformLayeredPane {
 	
-	private static final Color BG = new Color(null, 255, 228, 196);
+	private static final Color BG = new Color(null, 196, 228, 255);
 
 	public DiagramFigure(){
 		setOpaque(true);

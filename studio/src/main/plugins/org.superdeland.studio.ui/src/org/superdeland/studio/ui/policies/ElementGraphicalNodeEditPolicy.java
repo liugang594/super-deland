@@ -7,6 +7,8 @@ import org.eclipse.gef.requests.ReconnectRequest;
 import org.superdeland.studio.core.models.ElementModel;
 import org.superdeland.studio.core.models.RelationModel;
 import org.superdeland.studio.ui.commands.CreateConnectionCommand;
+import org.superdeland.studio.ui.commands.ReconnectSourceCommand;
+import org.superdeland.studio.ui.commands.ReconnectTargetCommand;
 
 public class ElementGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 
@@ -29,12 +31,18 @@ public class ElementGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 
 	@Override
 	protected Command getReconnectTargetCommand(ReconnectRequest request) {
-		return null;
+		ReconnectTargetCommand command = new ReconnectTargetCommand();
+		command.setNewTarget((ElementModel) request.getTarget().getModel());
+		command.setRelation((RelationModel) request.getConnectionEditPart().getModel());
+		return command;
 	}
 
 	@Override
 	protected Command getReconnectSourceCommand(ReconnectRequest request) {
-		return null;
+		ReconnectSourceCommand command = new ReconnectSourceCommand();
+		command.setNewSource((ElementModel) request.getTarget().getModel());
+		command.setRelation((RelationModel) request.getConnectionEditPart().getModel());
+		return command;
 	}
 
 }

@@ -8,17 +8,21 @@ import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.superdeland.studio.core.models.AbstractModel;
 import org.superdeland.studio.core.models.ElementModel;
 import org.superdeland.studio.core.models.RelationModel;
+import org.superdeland.studio.ui.edit.DelandDirectEditManager;
 import org.superdeland.studio.ui.figures.ElementFigure;
 import org.superdeland.studio.ui.policies.ElementComponentEditPolicy;
+import org.superdeland.studio.ui.policies.ElementDirectEditPolicy;
 import org.superdeland.studio.ui.policies.ElementGraphicalNodeEditPolicy;
 
 public class ElementEditPart extends AbstractGraphicalEditPart implements
@@ -35,13 +39,22 @@ public class ElementEditPart extends AbstractGraphicalEditPart implements
 	}
 
 	@Override
+	public void performRequest(Request req) {
+		if(req.getType() == RequestConstants.REQ_DIRECT_EDIT){
+			DelandDirectEditManager editManager = new DelandDirectEditManager(this);
+			editManager.show();
+		}else{
+			super.performRequest(req);
+		}
+	}
+	
+	@Override
 	protected void createEditPolicies() {
-		// installEditPolicy(EditPolicy.LAYOUT_ROLE, new
-		// ResizeElementEditPolicy());
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
 				new ElementGraphicalNodeEditPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE,
 				new ElementComponentEditPolicy());
+		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new ElementDirectEditPolicy());
 	}
 
 	@Override
@@ -67,6 +80,10 @@ public class ElementEditPart extends AbstractGraphicalEditPart implements
 						model.getLocation(), model.getSize()));
 		Animation.run(200);
 	}
+	
+	protected void refreshName(){
+		((Label)getFigure()).setText(((ElementModel)getModel()).getName());
+	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
@@ -78,6 +95,8 @@ public class ElementEditPart extends AbstractGraphicalEditPart implements
 			refreshSourceConnections();
 		} else if (AbstractModel.PROP_TARGET.equals(propertyName)) {
 			refreshTargetConnections();
+		} else if (AbstractModel.PROP_NAME.equals(propertyName)) {
+			refreshName();
 		}
 	}
 

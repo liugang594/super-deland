@@ -5,8 +5,11 @@ import java.util.EventObject;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.KeyStroke;
+import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.ConnectionCreationToolEntry;
@@ -19,17 +22,23 @@ import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.tools.AbstractTool;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.ui.actions.ActionFactory;
 import org.superdeland.studio.core.models.DiagramModel;
 import org.superdeland.studio.core.models.ElementModel;
 import org.superdeland.studio.core.models.RelationModel;
 import org.superdeland.studio.ui.Activator;
+import org.superdeland.studio.ui.actions.InsertElementAction;
 import org.superdeland.studio.ui.factories.DelandCreationFactory;
 import org.superdeland.studio.ui.factories.DelandEditPartFactory;
 import org.superdeland.studio.ui.util.SaveHelper;
 
-public class DelandEditor extends GraphicalEditorWithFlyoutPalette {
+public class DelandEditor extends GraphicalEditorWithFlyoutPalette implements MouseMoveListener {
+
+	private Point latestMouseLocation = new Point(0, 0);
 
 	public DelandEditor() {
 		setEditDomain(new DelandEditDomain(this));
@@ -43,10 +52,10 @@ public class DelandEditor extends GraphicalEditorWithFlyoutPalette {
 		paletteRoot.add(basicGroup);
 
 		basicGroup.add(new SelectionToolEntry());
-		
+
 		MarqueeToolEntry marqueEntry = new MarqueeToolEntry();
-		marqueEntry.setToolProperty(
-				AbstractTool.PROPERTY_UNLOAD_WHEN_FINISHED, true);
+		marqueEntry.setToolProperty(AbstractTool.PROPERTY_UNLOAD_WHEN_FINISHED,
+				true);
 		basicGroup.add(marqueEntry);
 
 		ToolEntry connectionToolEntry = new ConnectionCreationToolEntry(
@@ -72,7 +81,9 @@ public class DelandEditor extends GraphicalEditorWithFlyoutPalette {
 	@Override
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
-		getGraphicalViewer().setContents(SaveHelper.loadModel((IFile) getEditorInput().getAdapter(IFile.class)));
+		getGraphicalViewer().setContents(
+				SaveHelper.loadModel((IFile) getEditorInput().getAdapter(
+						IFile.class)));
 	}
 
 	@Override
@@ -81,16 +92,55 @@ public class DelandEditor extends GraphicalEditorWithFlyoutPalette {
 		getGraphicalViewer()
 				.setRootEditPart(new ScalableFreeformRootEditPart());
 		getGraphicalViewer().setEditPartFactory(new DelandEditPartFactory());
+		registerShortcuts();
+		
+		getGraphicalControl().addMouseMoveListener(this);
+		
+	}
+
+	private void registerShortcuts() {
 		getGraphicalViewer().setKeyHandler(new KeyHandler());
-		getGraphicalViewer().getKeyHandler().put(KeyStroke.getPressed(SWT.DEL, (int)SWT.DEL, SWT.NONE), getActionRegistry().getAction(ActionFactory.DELETE.getId()));
-		getGraphicalViewer().getKeyHandler().put(KeyStroke.getPressed((char)('y'-'a'+1), (int)'y', SWT.CTRL), getActionRegistry().getAction(ActionFactory.REDO.getId()));
-		getGraphicalViewer().getKeyHandler().put(KeyStroke.getPressed((char)('z'-'a'+1), (int)'z', SWT.CTRL), getActionRegistry().getAction(ActionFactory.UNDO.getId()));
+		getGraphicalViewer().getKeyHandler().put(
+				KeyStroke.getPressed(SWT.DEL, (int) SWT.DEL, SWT.NONE),
+				getActionRegistry().getAction(ActionFactory.DELETE.getId()));
+		getGraphicalViewer().getKeyHandler().put(
+				KeyStroke.getPressed((char) ('y' - 'a' + 1), (int) 'y',
+						SWT.CTRL),
+				getActionRegistry().getAction(ActionFactory.REDO.getId()));
+		getGraphicalViewer().getKeyHandler().put(
+				KeyStroke.getPressed((char) ('z' - 'a' + 1), (int) 'z',
+						SWT.CTRL),
+				getActionRegistry().getAction(ActionFactory.UNDO.getId()));
+		getGraphicalViewer().getKeyHandler().put(
+				KeyStroke.getPressed((char)0, SWT.INSERT, SWT.NONE),
+				getActionRegistry().getAction(InsertElementAction.ID));
+	}
+
+	@Override
+	public GraphicalViewer getGraphicalViewer() {
+		return super.getGraphicalViewer();
+	}
+
+	@Override
+	public CommandStack getCommandStack() {
+		return super.getCommandStack();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void createActions() {
+		super.createActions();
+
+		IAction action = new InsertElementAction(this);
+		getActionRegistry().registerAction(action);
+		getStackActions().add(action.getId());
 	}
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		SaveHelper.saveModel((DiagramModel) getGraphicalViewer().getContents()
-				.getModel(), (IFile) getEditorInput().getAdapter(IResource.class));
+				.getModel(),
+				(IFile) getEditorInput().getAdapter(IResource.class));
 		getCommandStack().markSaveLocation();
 	}
 
@@ -103,6 +153,16 @@ public class DelandEditor extends GraphicalEditorWithFlyoutPalette {
 	public void commandStackChanged(EventObject event) {
 		super.commandStackChanged(event);
 		firePropertyChange(PROP_DIRTY);
+	}
+
+	@Override
+	public void mouseMove(MouseEvent e) {
+		this.latestMouseLocation.x = e.x;
+		this.latestMouseLocation.y = e.y;
+	}
+	
+	public Point getLatestMouseLocation() {
+		return latestMouseLocation;
 	}
 
 }

@@ -17,7 +17,6 @@ public class ElementFigure extends Label implements MouseMotionListener {
 	private boolean isMouseOvered = false;
 	
 	public ElementFigure() {
-//		setOpaque(true);
 		setBackgroundColor(backgroundColor);
 		addMouseMotionListener(this);
 	}
@@ -33,7 +32,6 @@ public class ElementFigure extends Label implements MouseMotionListener {
 
 	@Override
 	public void mouseDragged(MouseEvent me) {
-		
 	}
 
 	@Override
@@ -55,7 +53,6 @@ public class ElementFigure extends Label implements MouseMotionListener {
 
 	@Override
 	public void mouseMoved(MouseEvent me) {
-		
 	}
 	
 	public void setSelected(boolean isHighlight){
