@@ -10,6 +10,7 @@ import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.ConnectionCreationToolEntry;
+import org.eclipse.gef.palette.MarqueeToolEntry;
 import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteGroup;
@@ -42,6 +43,11 @@ public class DelandEditor extends GraphicalEditorWithFlyoutPalette {
 		paletteRoot.add(basicGroup);
 
 		basicGroup.add(new SelectionToolEntry());
+		
+		MarqueeToolEntry marqueEntry = new MarqueeToolEntry();
+		marqueEntry.setToolProperty(
+				AbstractTool.PROPERTY_UNLOAD_WHEN_FINISHED, true);
+		basicGroup.add(marqueEntry);
 
 		ToolEntry connectionToolEntry = new ConnectionCreationToolEntry(
 				"Connection", "Create Connection", new DelandCreationFactory(

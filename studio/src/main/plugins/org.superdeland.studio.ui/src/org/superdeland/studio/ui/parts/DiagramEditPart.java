@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LayoutAnimator;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.superdeland.studio.core.models.AbstractModel;
@@ -24,11 +25,13 @@ public class DiagramEditPart extends AbstractGraphicalEditPart implements Proper
 	public void activate() {
 		super.activate();
 		((DiagramModel)getModel()).addPropertyChangeListener(this);
+		getFigure().addLayoutListener(LayoutAnimator.getDefault());
 	}
 	
 	@Override
 	public void deactivate() {
 		((DiagramModel)getModel()).removePropertyChangeListener(this);
+		getFigure().removeLayoutListener(LayoutAnimator.getDefault());
 		super.deactivate();
 	}
 

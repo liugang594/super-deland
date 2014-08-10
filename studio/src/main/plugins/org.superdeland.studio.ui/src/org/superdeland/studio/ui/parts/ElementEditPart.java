@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
@@ -20,7 +21,8 @@ import org.superdeland.studio.ui.figures.ElementFigure;
 import org.superdeland.studio.ui.policies.ElementComponentEditPolicy;
 import org.superdeland.studio.ui.policies.ElementGraphicalNodeEditPolicy;
 
-public class ElementEditPart extends AbstractGraphicalEditPart implements NodeEditPart, PropertyChangeListener {
+public class ElementEditPart extends AbstractGraphicalEditPart implements
+		NodeEditPart, PropertyChangeListener {
 
 	@Override
 	protected IFigure createFigure() {
@@ -34,50 +36,58 @@ public class ElementEditPart extends AbstractGraphicalEditPart implements NodeEd
 
 	@Override
 	protected void createEditPolicies() {
-//		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ResizeElementEditPolicy());
-		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new ElementGraphicalNodeEditPolicy());
-		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ElementComponentEditPolicy());
+		// installEditPolicy(EditPolicy.LAYOUT_ROLE, new
+		// ResizeElementEditPolicy());
+		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
+				new ElementGraphicalNodeEditPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE,
+				new ElementComponentEditPolicy());
 	}
 
-	
 	@Override
 	public void activate() {
 		super.activate();
-		((ElementModel)getModel()).addPropertyChangeListener(this);
+		((ElementModel) getModel()).addPropertyChangeListener(this);
 	}
-	
+
 	@Override
 	public void deactivate() {
-		((ElementModel)getModel()).removePropertyChangeListener(this);
+		((ElementModel) getModel()).removePropertyChangeListener(this);
 		super.deactivate();
 	}
-	
+
 	@Override
 	protected void refreshVisuals() {
 		IFigure figure = getFigure();
 		ElementModel model = (ElementModel) getModel();
-		((AbstractGraphicalEditPart)getParent()).setLayoutConstraint(this, figure, new Rectangle(model.getLocation(), model.getSize()));
+
+		Animation.markBegin();
+		((AbstractGraphicalEditPart) getParent()).setLayoutConstraint(
+				ElementEditPart.this, figure, new Rectangle(
+						model.getLocation(), model.getSize()));
+		Animation.run(200);
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
 		String propertyName = arg0.getPropertyName();
-		if(AbstractModel.PROP_LOCATION.equals(propertyName)||AbstractModel.PROP_SIZE.equals(propertyName)){
+		if (AbstractModel.PROP_LOCATION.equals(propertyName)
+				|| AbstractModel.PROP_SIZE.equals(propertyName)) {
 			refreshVisuals();
-		}else if(AbstractModel.PROP_SOURCE.equals(propertyName)){
+		} else if (AbstractModel.PROP_SOURCE.equals(propertyName)) {
 			refreshSourceConnections();
-		}else if(AbstractModel.PROP_TARGET.equals(propertyName)){
+		} else if (AbstractModel.PROP_TARGET.equals(propertyName)) {
 			refreshTargetConnections();
 		}
 	}
-	
+
 	@Override
 	public void setSelected(int value) {
 		super.setSelected(value);
-		if(value == SELECTED || value == SELECTED_PRIMARY){
-			((ElementFigure)getFigure()).setSelected(true);
-		}else {
-			((ElementFigure)getFigure()).setSelected(false);
+		if (value == SELECTED || value == SELECTED_PRIMARY) {
+			((ElementFigure) getFigure()).setSelected(true);
+		} else {
+			((ElementFigure) getFigure()).setSelected(false);
 		}
 	}
 
@@ -102,14 +112,14 @@ public class ElementEditPart extends AbstractGraphicalEditPart implements NodeEd
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
 		return new ChopboxAnchor(getFigure());
 	}
-	
+
 	@Override
 	protected List<RelationModel> getModelSourceConnections() {
-		return ((ElementModel)getModel()).getSources();
+		return ((ElementModel) getModel()).getSources();
 	}
-	
+
 	@Override
 	protected List<RelationModel> getModelTargetConnections() {
-		return ((ElementModel)getModel()).getTargets();
+		return ((ElementModel) getModel()).getTargets();
 	}
 }
