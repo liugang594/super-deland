@@ -59,6 +59,9 @@ public class ElementGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 
 	@Override
 	protected Command getReconnectTargetCommand(ReconnectRequest request) {
+		if(!(request.getTarget().getModel() instanceof ElementEditPart)){
+			return null;
+		}
 		ReconnectTargetCommand command = new ReconnectTargetCommand();
 		command.setNewTarget((ElementModel) request.getTarget().getModel());
 		command.setRelation((RelationModel) request.getConnectionEditPart().getModel());
@@ -67,6 +70,9 @@ public class ElementGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 
 	@Override
 	protected Command getReconnectSourceCommand(ReconnectRequest request) {
+		if(!(request.getTarget().getModel() instanceof ElementEditPart)){
+			return null;
+		}
 		ReconnectSourceCommand command = new ReconnectSourceCommand();
 		command.setNewSource((ElementModel) request.getTarget().getModel());
 		command.setRelation((RelationModel) request.getConnectionEditPart().getModel());
