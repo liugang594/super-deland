@@ -4,14 +4,16 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.commands.Command;
 import org.superdeland.studio.core.models.ElementModel;
+import org.superdeland.studio.core.models.Location;
+import org.superdeland.studio.core.models.Size;
 
 public class ResizeElementCommand extends Command {
 
 	private ElementModel model;
 	
 	private Dimension sizeDelta;
-	private Dimension oldSize;
-	private Point oldLocation;
+	private Size oldSize;
+	private Location oldLocation;
 
 	private Point moveDelta;
 	
@@ -27,9 +29,8 @@ public class ResizeElementCommand extends Command {
 	
 	@Override
 	public void execute() {
-		model.setSize(new Dimension(oldSize.width+sizeDelta.width, oldSize.height+sizeDelta.height));
-		
-		model.setLocation(new Point(oldLocation.x+moveDelta.x, oldLocation.y+moveDelta.y));
+		model.setSize(new Size(oldSize.getWidth()+sizeDelta.width, oldSize.getHeight()+sizeDelta.height));
+		model.setLocation(new Location(oldLocation.getX()+moveDelta.x, oldLocation.getY()+moveDelta.y));
 	}
 	
 	@Override

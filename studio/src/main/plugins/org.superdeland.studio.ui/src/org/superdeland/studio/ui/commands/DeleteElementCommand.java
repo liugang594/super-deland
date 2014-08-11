@@ -25,11 +25,9 @@ public class DeleteElementCommand extends Command {
 	public void execute() {
 		for(RelationModel source: sources){
 			source.deattachSource();
-			source.deattachTarget();
 		}
 		for(RelationModel target: targets){
 			target.deattachTarget();
-			target.deattachSource();
 		}
 		diagramModel.removeNode(element);
 	};
@@ -38,12 +36,10 @@ public class DeleteElementCommand extends Command {
 	public void undo() {
 		diagramModel.addNode(element);
 		for(RelationModel target: targets){
-			target.attachSource();
 			target.attachTarget();
 		}
 		for(RelationModel source: sources){
 			source.attachSource();
-			source.attachTarget();
 		}
 	}
 	

@@ -9,6 +9,8 @@ import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.DragTracker;
@@ -35,28 +37,31 @@ public class ElementEditPart extends AbstractGraphicalEditPart implements
 		ElementFigure elementFigure = new ElementFigure();
 		ElementModel model = (ElementModel) getModel();
 		elementFigure.setText(model.getName());
-		elementFigure.setLocation(model.getLocation());
-		elementFigure.setSize(model.getSize());
+		elementFigure.setLocation(new Point(model.getLocation().getX(), model
+				.getLocation().getY()));
+		elementFigure.setSize(new Dimension(model.getSize().getWidth(), model.getSize().getHeight()));
 		return elementFigure;
 	}
 
 	@Override
 	public void performRequest(Request req) {
-		if(req.getType() == RequestConstants.REQ_DIRECT_EDIT){
-			DelandDirectEditManager editManager = new DelandDirectEditManager(this);
+		if (req.getType() == RequestConstants.REQ_DIRECT_EDIT) {
+			DelandDirectEditManager editManager = new DelandDirectEditManager(
+					this);
 			editManager.show();
-		}else{
+		} else {
 			super.performRequest(req);
 		}
 	}
-	
+
 	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
 				new ElementGraphicalNodeEditPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE,
 				new ElementComponentEditPolicy());
-		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new ElementDirectEditPolicy());
+		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
+				new ElementDirectEditPolicy());
 	}
 
 	@Override
@@ -78,13 +83,14 @@ public class ElementEditPart extends AbstractGraphicalEditPart implements
 
 		Animation.markBegin();
 		((AbstractGraphicalEditPart) getParent()).setLayoutConstraint(
-				ElementEditPart.this, figure, new Rectangle(
-						model.getLocation(), model.getSize()));
+				ElementEditPart.this, figure, new Rectangle(new Point(model
+						.getLocation().getX(), model.getLocation().getY()),
+						new Dimension(model.getSize().getWidth(), model.getSize().getHeight())));
 		Animation.run(200);
 	}
-	
-	protected void refreshName(){
-		((Label)getFigure()).setText(((ElementModel)getModel()).getName());
+
+	protected void refreshName() {
+		((Label) getFigure()).setText(((ElementModel) getModel()).getName());
 	}
 
 	@Override
@@ -143,7 +149,7 @@ public class ElementEditPart extends AbstractGraphicalEditPart implements
 	protected List<RelationModel> getModelTargetConnections() {
 		return ((ElementModel) getModel()).getTargets();
 	}
-	
+
 	@Override
 	public DragTracker getDragTracker(Request request) {
 		return new DragElementEditPartTracker(this, request);

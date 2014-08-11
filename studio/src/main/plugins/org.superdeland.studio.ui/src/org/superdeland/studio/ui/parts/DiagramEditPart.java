@@ -13,6 +13,7 @@ import org.superdeland.studio.core.models.DiagramModel;
 import org.superdeland.studio.core.models.ElementModel;
 import org.superdeland.studio.ui.figures.DiagramFigure;
 import org.superdeland.studio.ui.policies.DiagramLayoutPolicy;
+import org.superdeland.studio.ui.policies.ElementGraphicalNodeEditPolicy;
 
 public class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChangeListener {
 
@@ -38,6 +39,8 @@ public class DiagramEditPart extends AbstractGraphicalEditPart implements Proper
 	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new DiagramLayoutPolicy());
+		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
+				new ElementGraphicalNodeEditPolicy());
 	}
 
 	@Override

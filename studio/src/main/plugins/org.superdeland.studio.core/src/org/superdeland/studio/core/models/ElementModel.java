@@ -4,14 +4,11 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-
 public class ElementModel extends AbstractModel {
 
-	private Point location = new Point(0, 0);
+	private Location location = new Location(0, 0);
 
-	private Dimension size = new Dimension(100, 50);
+	private Size size = new Size(100, 50);
 	
 	private List<RelationModel> sources = new ArrayList<>();
 	
@@ -20,7 +17,7 @@ public class ElementModel extends AbstractModel {
 	private String name = "<unnamed>";
 
 	private DiagramModel diagramModel;
-
+	
 	public void setName(String name) {
 		this.name = name;
 		PropertyChangeEvent event = new PropertyChangeEvent(this, PROP_NAME,
@@ -32,27 +29,27 @@ public class ElementModel extends AbstractModel {
 		return name;
 	}
 
-	public void setLocation(Point location) {
-		Point old = this.location;
+	public void setLocation(Location location) {
+		Location old = this.location;
 		this.location = location;
 		PropertyChangeEvent event = new PropertyChangeEvent(this,
 				PROP_LOCATION, old, location);
 		firePropertyChangeEvent(event);
 	}
 
-	public Point getLocation() {
+	public Location getLocation() {
 		return location;
 	}
 
-	public void setSize(Dimension size) {
-		Dimension old = this.size;
+	public void setSize(Size size) {
+		Size old = this.size;
 		this.size = size;
 		PropertyChangeEvent event = new PropertyChangeEvent(this, PROP_SIZE,
 				old, size);
 		firePropertyChangeEvent(event);
 	}
 
-	public Dimension getSize() {
+	public Size getSize() {
 		return size;
 	}
 	

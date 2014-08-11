@@ -4,6 +4,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.commands.Command;
 import org.superdeland.studio.core.models.DiagramModel;
 import org.superdeland.studio.core.models.ElementModel;
+import org.superdeland.studio.core.models.Location;
 
 public class CreateNodeCommand extends Command {
 
@@ -11,7 +12,7 @@ public class CreateNodeCommand extends Command {
 
 	private DiagramModel diagram;
 
-	private Point location;
+	private Location location;
 
 	public void setElement(ElementModel element) {
 		this.element = element;
@@ -46,7 +47,7 @@ public class CreateNodeCommand extends Command {
 	}
 
 	public void setLocation(Point location) {
-		this.location = location;
+		this.location = new Location(location.x, location.y);
 	}
 
 }

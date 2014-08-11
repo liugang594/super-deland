@@ -22,11 +22,11 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
 import org.superdeland.studio.core.models.DiagramModel;
 import org.superdeland.studio.core.models.ElementModel;
+import org.superdeland.studio.core.models.Location;
 import org.superdeland.studio.core.models.RelationModel;
+import org.superdeland.studio.core.models.Size;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -92,10 +92,10 @@ public class SaveHelper {
 		Element element = document.createElement(ELEMENT);
 		element.setAttribute(ID, child.getId());
 		element.setAttribute(NAME, child.getName());
-		element.setAttribute(SIZE,
-				child.getSize().width + "," + child.getSize().height);
-		element.setAttribute(LOCATION,
-				child.getLocation().x + "," + child.getLocation().y);
+		element.setAttribute(SIZE, child.getSize().getWidth() + ","
+				+ child.getSize().getHeight());
+		element.setAttribute(LOCATION, child.getLocation().getX() + ","
+				+ child.getLocation().getY());
 		rootElement.appendChild(element);
 		return child.getSources();
 
@@ -114,9 +114,8 @@ public class SaveHelper {
 			return diagramModel;
 		} catch (SAXException | IOException | ParserConfigurationException
 				| CoreException | XPathExpressionException e) {
-			e.printStackTrace();
 		}
-		return null;
+		return new DiagramModel();
 	}
 
 	private static void loadConnections(Document document,
@@ -125,23 +124,23 @@ public class SaveHelper {
 		NodeList relations = (NodeList) xpath.evaluate("//" + RELATION,
 				document, XPathConstants.NODESET);
 		int length = relations.getLength();
-		
+
 		List<ElementModel> elements = diagramModel.getChildren();
-		
+
 		for (int i = 0; i < length; i++) {
 			Element item = (Element) relations.item(i);
-			
+
 			RelationModel relationModel = new RelationModel();
 			relationModel.setId(item.getAttribute(ID));
-			
+
 			String sourceId = item.getAttribute(SOURCE);
 			String targetId = item.getAttribute(TARGET);
-			
-			for(ElementModel element:elements){
-				if(sourceId.equals(element.getId())){
+
+			for (ElementModel element : elements) {
+				if (sourceId.equals(element.getId())) {
 					relationModel.setSource(element);
 					relationModel.attachSource();
-				}else if(targetId.equals(element.getId())){
+				} else if (targetId.equals(element.getId())) {
 					relationModel.setTarget(element);
 					relationModel.attachTarget();
 				}
@@ -162,12 +161,13 @@ public class SaveHelper {
 			elementModel.setName(item.getAttribute(NAME));
 
 			String[] size = item.getAttribute(SIZE).split(",");
-			elementModel.setSize(new Dimension(Integer.parseInt(size[0]),
-					Integer.parseInt(size[1])));
+			elementModel.setSize(new Size(Integer.parseInt(size[0]), Integer
+					.parseInt(size[1])));
 
 			String[] location = item.getAttribute(LOCATION).split(",");
-			elementModel.setLocation(new Point(Integer.parseInt(location[0]),
-					Integer.parseInt(location[1])));
+			elementModel.setLocation(new Location(
+					Integer.parseInt(location[0]), Integer
+							.parseInt(location[1])));
 
 			diagramModel.addNode(elementModel);
 		}

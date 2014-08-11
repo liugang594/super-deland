@@ -6,6 +6,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.SelectionRequest;
+import org.eclipse.gef.tools.ConnectionCreationTool;
 import org.eclipse.gef.tools.DragEditPartsTracker;
 import org.eclipse.swt.events.MouseEvent;
 import org.superdeland.studio.core.models.RelationModel;
@@ -24,11 +25,20 @@ public class DragElementEditPartTracker extends DragEditPartsTracker {
 	public void mouseDrag(MouseEvent me, EditPartViewer viewer) {
 		if (request instanceof SelectionRequest
 				&& ((SelectionRequest) request).getLastButtonPressed() == 3) {
-			CreateConnectionRequest connectionRequest = new CreateConnectionRequest();
+			final CreateConnectionRequest connectionRequest = new CreateConnectionRequest();
 			connectionRequest.setType(RequestConstants.REQ_CONNECTION_START);
 			connectionRequest.setFactory(new DelandCreationFactory(RelationModel.class));
 			connectionRequest.setTargetEditPart(getSourceEditPart());
-			viewer.getEditDomain().getActiveTool();
+			ConnectionCreationTool connectionCreationTool = new ConnectionCreationTool(){
+				@Override
+				protected Request getTargetRequest() {
+					return connectionRequest;
+				}
+			};
+			connectionCreationTool.setUnloadWhenFinished(true);
+			viewer.getEditDomain().setActiveTool(connectionCreationTool);
+			me.button = 1;
+			connectionCreationTool.mouseDown(me, viewer);
 		} else {
 			super.mouseDrag(me, viewer);
 		}

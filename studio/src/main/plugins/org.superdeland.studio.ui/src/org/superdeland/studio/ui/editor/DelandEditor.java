@@ -21,6 +21,7 @@ import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.tools.AbstractTool;
+import org.eclipse.gef.tools.MarqueeSelectionTool;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
@@ -54,6 +55,10 @@ public class DelandEditor extends GraphicalEditorWithFlyoutPalette implements Mo
 		basicGroup.add(new SelectionToolEntry());
 
 		MarqueeToolEntry marqueEntry = new MarqueeToolEntry();
+		marqueEntry
+				.setToolProperty(
+						MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR,
+						MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS);
 		marqueEntry.setToolProperty(AbstractTool.PROPERTY_UNLOAD_WHEN_FINISHED,
 				true);
 		basicGroup.add(marqueEntry);
