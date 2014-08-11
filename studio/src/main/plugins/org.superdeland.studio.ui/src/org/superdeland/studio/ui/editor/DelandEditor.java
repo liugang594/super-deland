@@ -22,6 +22,8 @@ import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.tools.AbstractTool;
 import org.eclipse.gef.tools.MarqueeSelectionTool;
+import org.eclipse.gef.ui.actions.DirectEditAction;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
@@ -119,6 +121,13 @@ public class DelandEditor extends GraphicalEditorWithFlyoutPalette implements Mo
 		getGraphicalViewer().getKeyHandler().put(
 				KeyStroke.getPressed((char)0, SWT.INSERT, SWT.NONE),
 				getActionRegistry().getAction(InsertElementAction.ID));
+		getGraphicalViewer().getKeyHandler()
+				.put(KeyStroke.getPressed((char) 1, (int) 'a', SWT.CTRL),
+						getActionRegistry().getAction(
+								ActionFactory.SELECT_ALL.getId()));
+		getGraphicalViewer().getKeyHandler()
+				.put(KeyStroke.getPressed((char) 0, SWT.F2, SWT.NONE),
+						getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
 	}
 
 	@Override
@@ -139,6 +148,10 @@ public class DelandEditor extends GraphicalEditorWithFlyoutPalette implements Mo
 		IAction action = new InsertElementAction(this);
 		getActionRegistry().registerAction(action);
 		getStackActions().add(action.getId());
+		
+		action = new DirectEditAction(this);
+		getActionRegistry().registerAction(action);
+		getSelectionActions().add(action.getId());
 	}
 
 	@Override
