@@ -1,0 +1,31 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Peggy",
+    "description" : "No description",
+    "contact" : { },
+    "version" : "1.0.0"
+  },
+  "paths" : {
+    "/books" : {
+      "get" : {
+        "summary" : "Get all books",
+        "responses" : {
+          "200" : {
+            "description" : "Status 200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "additionalProperties" : false
+                },
+                "example" : "<menu id=\"file\" value=\"File\">\n<popup>\n<menuitem value=\"New\" onclick=\"CreateNewDoc()\" />\n<menuitem value=\"Open\" onclick=\"OpenDoc()\" />\n<menuitem value=\"Close\" onclick=\"CloseDoc()\" />\n</popup>\n</menu>"
+              }
+            }
+          }
+        },
+        "security" : [ ]
+      }
+    }
+  }
+}
